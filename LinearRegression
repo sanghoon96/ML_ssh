@@ -62,3 +62,27 @@ plt.scatter(y_test, predictions)
 lr.score(x_test, y_test)
 from sklearn import metrics
 metrics.r2_score(y_test, predictions)
+
+---------------------------------------------------------------------------------------------------
+
+Try - Ridge
+@ vi 03.LinearRegressionWithboston.ipynb
+result = dict()
+from sklearn.linear_model import Ridge
+ridge = Ridge()
+ridge.fit(train_boston_data, train_boston_target)
+result['ridge'] = ridge.score(test_boston_data, test_boston_target)
+
+ridge_5 = Ridge(alpha=0.5) # 제약 조건
+ridge_5.fit(train_boston_data, train_boston_target)
+result['ridge_5'] = ridge_5.score(test_boston_data, test_boston_target)
+
+ridge_1 = Ridge(alpha=0.1, solver='auto')
+ridge_1.fit(train_boston_data, train_boston_target)
+result['ridge_1'] = ridge_1.score(test_boston_data, test_boston_target)
+
+se1 = pd.Series(result)
+print(se1) → Try sel1.plot(kind='barh')
+ridge 0.579611
+ridge_5 0.583650
+ridge_1 0.588000

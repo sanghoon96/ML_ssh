@@ -1,0 +1,47 @@
+Try - LogisticRegression() - parameter ‘C’
+❖ Regularization C값 클수록 decision boundary는 overfitting 가능성 증가.
+@ vi 00.Parameter_EvaluationWithLogisticRegression.ipynb
+!pip install mglearn
+from mglearn.plots import plot_2d_separator
+from mglearn.datasets import make_forge
+import matplotlib.pyplot as plt
+x, y = make_forge()
+c_set = [0.001, 1, 1000]
+_, axes = plt.subplots(1, 3)
+from sklearn.linear_model import LogisticRegression
+for c_arg, axe in zip(c_set, axes.ravel()):
+params = {'C':c_arg, 'max_iter':5000}
+clf = LogisticRegression(**params).fit(x, y)
+plot_2d_separator(clf, x, fill=True, ax=axe, eps=0.5, alpha=0.5)
+idx_set = []
+for i in np.unique(y): # np.unique: 유일한 값만 리턴
+idx = np.where(y==i)[0]
+idx_set.append(idx)
+axe.scatter(x[idx_set[0]][:, 0], x[idx_set[0]][:, 1], marker='^')
+axe.scatter(x[idx_set[1]][:, 0], x[idx_set[1]][:, 1], marker='o')
+plt.show()
+
+
+
+
+Try - LogisticRegression() - parameter ‘penalty’, ‘max_iter’
+❖ Regularization 후 독립변수 결정 도움 주는 parameter는 'penalty'
+@ vi 00.Parameter_EvaluationWithLogisticRegression.ipynb
+from sklearn.datasets import load_breast_cancer
+cancer = load_breast_cancer()
+x_train = cancer.data
+y_train = cancer.target
+import matplotlib.pyplot as plt
+C_set = [0.01, 1, 100]
+n_feature = cancer.data.shape[1]
+marker_set = ['o', '^', 'v']
+line = np.linspace(0, n_feature, num=n_feature).reshape(-1, 1)
+for c_args, m in zip(C_set, marker_set):
+params = {'C':c_args, ‘max_iter’:5000} # Try below
+# params = {'C':c_args, 'penalty':'l1', 'solver':'saga', ‘max_iter’:5000} # Try l2
+logreg = LogisticRegression(**params).fit(x_train, y_train)
+plt.scatter(line, logreg.coef_, marker=m, label='C={}'.format(c_args))
+plt.xticks(np.arange(n_feature), cancer.feature_names, rotation=90, ha='center')
+plt.ylabel('coef_ size', size=15)
+plt.legend()
+plt.show()

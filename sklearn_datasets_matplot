@@ -1,0 +1,16 @@
+from sklearn.datasets import load_digits
+digits = load_digits()
+type(digits), digits.keys()
+
+digits.images.shape, digits.images[5].shape
+
+import matplotlib.pyplot as plt
+plt.imshow(digits.images[5], cmap=plt.cm.gray)
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(digits.data, digits.target)
+
+from sklearn.linear_model import LogisticRegression
+logisticRegr = LogisticRegression()         #Try add solver='saga', max_iter=5000
+logisticRegr.fit(x_train, y_train)
+logisticRegr.predict([x_test[5]])
